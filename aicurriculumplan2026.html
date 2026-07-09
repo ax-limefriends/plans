@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 라임프렌즈 AI 교육과정 기획안</title>
+<style>
+  :root {
+    --page: #f9f9f7; --surface: #fcfcfb;
+    --ink: #0b0b0b; --ink-2: #52514e; --ink-3: #898781;
+    --grid: #e1e0d9; --border: rgba(11,11,11,0.10);
+    --blue: #2a78d6; --blue-soft: #cde2fb; --blue-deep: #184f95;
+    --aqua: #1baf7a; --yellow: #eda100; --green: #008300;
+    --accent-bg: #eef4fc;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --page: #0d0d0d; --surface: #1a1a19;
+      --ink: #ffffff; --ink-2: #c3c2b7; --ink-3: #898781;
+      --grid: #2c2c2a; --border: rgba(255,255,255,0.10);
+      --blue: #3987e5; --blue-soft: #104281; --blue-deep: #86b6ef;
+      --aqua: #199e70; --yellow: #c98500; --green: #0ca30c;
+      --accent-bg: #16233a;
+    }
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+    background: var(--page); color: var(--ink); line-height: 1.65;
+    font-size: 16px;
+  }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 32px 20px 80px; }
+  header.hero {
+    background: linear-gradient(135deg, var(--blue-deep), var(--blue));
+    color: #fff; border-radius: 16px; padding: 40px 32px; margin-bottom: 40px;
+  }
+  header.hero .eyebrow { font-size: 14px; opacity: .85; letter-spacing: .06em; margin-bottom: 8px; }
+  header.hero h1 { font-size: 30px; line-height: 1.3; margin-bottom: 12px; }
+  header.hero p { font-size: 15px; opacity: .92; max-width: 640px; }
+  h2 {
+    font-size: 22px; margin: 56px 0 8px; padding-top: 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  h2 .num {
+    background: var(--blue); color: #fff; border-radius: 8px;
+    width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .lead { color: var(--ink-2); margin-bottom: 20px; font-size: 15px; }
+  h3 { font-size: 17px; margin: 28px 0 10px; }
+  p { margin-bottom: 10px; }
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px 22px; margin-bottom: 14px;
+  }
+  /* stat tiles */
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin: 20px 0; }
+  .tile { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+  .tile .v { font-size: 30px; font-weight: 700; color: var(--blue); }
+  .tile .v small { font-size: 15px; font-weight: 600; color: var(--ink-2); }
+  .tile .k { font-size: 13px; color: var(--ink-2); margin-top: 4px; }
+  /* file cards */
+  .files { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .file-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; }
+  .file-card .ftype { font-size: 12px; font-weight: 700; color: var(--blue); letter-spacing: .05em; }
+  .file-card h4 { font-size: 15px; margin: 6px 0 6px; }
+  .file-card p { font-size: 13.5px; color: var(--ink-2); margin: 0; }
+  /* bar chart */
+  .chart { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 22px; margin: 16px 0; }
+  .chart .ct { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+  .chart .cs { font-size: 13px; color: var(--ink-3); margin-bottom: 16px; }
+  .brow { display: grid; grid-template-columns: 190px 1fr 52px; align-items: center; gap: 10px; margin-bottom: 9px; }
+  .brow .bl { font-size: 13.5px; color: var(--ink-2); text-align: right; line-height: 1.3; }
+  .brow .bt { height: 20px; background: transparent; border-radius: 0 4px 4px 0; position: relative; }
+  .brow .bt i { display:block; height: 100%; background: var(--blue); border-radius: 0 4px 4px 0; }
+  .brow .bv { font-size: 13px; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .brow.hl .bt i { background: var(--blue); }
+  .brow.dim .bt i { background: var(--blue); opacity: .45; }
+  .cnote { font-size: 12.5px; color: var(--ink-3); margin-top: 12px; border-top: 1px solid var(--grid); padding-top: 10px; }
+  @media (max-width: 560px){ .brow { grid-template-columns: 120px 1fr 46px; } .brow .bl{ font-size:12px; } }
+  /* insight callout */
+  .callout {
+    background: var(--accent-bg); border-left: 4px solid var(--blue);
+    border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 18px 0; font-size: 14.5px;
+  }
+  .callout b { color: var(--blue-deep); }
+  @media (prefers-color-scheme: dark) { .callout b { color: var(--blue-deep); } }
+  /* tables */
+  .twrap { overflow-x: auto; margin: 12px 0; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; background: var(--surface); border-radius: 10px; overflow: hidden; }
+  th { background: var(--blue); color: #fff; text-align: left; padding: 10px 12px; font-size: 13px; white-space: nowrap; }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  td.mod { white-space: nowrap; font-weight: 600; color: var(--blue); }
+  td.hrs { white-space: nowrap; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  /* course cards */
+  .course {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+    padding: 26px 26px 20px; margin: 22px 0;
+  }
+  .course .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 14px; }
+  .chip {
+    font-size: 12.5px; font-weight: 600; padding: 4px 12px; border-radius: 999px;
+    background: var(--accent-bg); color: var(--blue-deep); border: 1px solid var(--border);
+  }
+  .course h3 { margin: 0; font-size: 19px; display: flex; gap: 10px; align-items: baseline; }
+  .course h3 .cno { color: var(--blue); font-size: 15px; font-weight: 800; flex-shrink: 0; }
+  .course .why { font-size: 14px; color: var(--ink-2); margin-bottom: 6px; }
+  .course .bench { font-size: 13px; color: var(--ink-3); margin-top: 12px; }
+  /* roadmap */
+  .stage { display: grid; grid-template-columns: 120px 1fr; gap: 16px; margin-bottom: 4px; }
+  .stage .badge {
+    text-align: center; align-self: start;
+    background: var(--blue); color: #fff; border-radius: 10px; padding: 10px 6px;
+    font-size: 13px; font-weight: 700; line-height: 1.35;
+  }
+  .stage .badge small { display: block; font-weight: 400; opacity: .85; font-size: 11.5px; }
+  .stage .body { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; margin-bottom: 14px; font-size: 14.5px; }
+  .stage .body b.t { display: block; margin-bottom: 4px; font-size: 15px; }
+  .stage .body ul { margin: 6px 0 0 18px; }
+  .stage .body li { margin-bottom: 4px; }
+  @media (max-width: 560px){ .stage { grid-template-columns: 1fr; } .stage .badge { padding: 8px; } }
+  /* checklist */
+  ol.steps { margin: 12px 0 0 0; padding-left: 0; list-style: none; counter-reset: st; }
+  ol.steps li {
+    counter-increment: st; position: relative; padding: 12px 16px 12px 52px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 10px; font-size: 14.5px;
+  }
+  ol.steps li::before {
+    content: counter(st); position: absolute; left: 14px; top: 12px;
+    width: 26px; height: 26px; border-radius: 50%; background: var(--blue); color:#fff;
+    display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700;
+  }
+  ul.plain { margin: 8px 0 8px 20px; }
+  ul.plain li { margin-bottom: 6px; }
+  footer { margin-top: 60px; padding-top: 16px; border-top: 1px solid var(--grid); font-size: 12.5px; color: var(--ink-3); }
+  .kbd { font-size: 13px; background: var(--accent-bg); border-radius: 6px; padding: 1px 8px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="eyebrow">LIMEFRIENDS · AX 교육사업 기획 · 2026</div>
+  <h1>2026 라임프렌즈 AI 교육과정 기획안</h1>
+  <p>정부지원 훈련사업 「2026 중소기업 인재 키움 프리미엄 훈련」 지원과정 풀 <b>2,952개 과정 전수 분석</b>을 바탕으로,
+  시장에서 가장 인지도 높고 수요가 검증된 AI 교육 테마를 선별해 라임프렌즈 AX 사업 로드맵에 맞춘 교육과정으로 설계했습니다.</p>
+</header>
+
+<!-- ================= 1. 분석 자료 ================= -->
+<h2><span class="num">1</span>무엇을 분석했나</h2>
+<p class="lead">업로드된 4개 자료를 모두 분석했으며, 각 자료는 아래와 같이 서로 연결됩니다.</p>
+<div class="files">
+  <div class="file-card">
+    <div class="ftype">XLSX · 핵심 데이터</div>
+    <h4>2026 중소기업 인재 키움 프리미엄 훈련 — 지원과정 풀</h4>
+    <p>45개 훈련기관, 총 2,952개 훈련과정 목록. 과정 유형(일반형/AI융합형), 훈련시간, 비대면 운영 여부, 일정·장소 포함. <b>이 기획안의 시장 수요 근거.</b></p>
+  </div>
+  <div class="file-card">
+    <div class="ftype">PDF · 사업 방향</div>
+    <h4>라임프렌즈 AX(AI 전환) 교육·컨설팅 사업 단계별 실행 로드맵</h4>
+    <p>①수의계약 즉시 매출 → ②원격 평생교육원 설립 → ③파트너 MOU 간접 환급 → ④자체 훈련기관 인증의 4단계 성장 전략. <b>교육과정이 따라야 할 사업 방향.</b></p>
+  </div>
+  <div class="file-card">
+    <div class="ftype">PDF · 참고1</div>
+    <h4>사회적기업 취약계층 고용비율 확인서 신청 매뉴얼</h4>
+    <p>취약계층 30% 이상 고용 시 <b>1인 견적 수의계약 한도가 2천만 → 5천만 원으로 확대</b>. 로드맵 1단계(B2G 수의계약 영업)의 필수 자격 서류.</p>
+  </div>
+  <div class="file-card">
+    <div class="ftype">HWP · 붙임2</div>
+    <h4>평생교육시설 신고서 (평생교육법 시행규칙 별지 제14호서식)</h4>
+    <p>원격 평생교육시설 설치 신고용 서식(운영규칙·위치도·시설현황표·평생교육사 자격증 등 첨부). 로드맵 <b>2단계 원격 평생교육원 설립</b>의 실행 서류.</p>
+  </div>
+</div>
+
+<!-- ================= 2. 시장 분석 ================= -->
+<h2><span class="num">2</span>시장이 말해주는 것 — 훈련과정 풀 전수 분석</h2>
+<p class="lead">2,952개 과정 전체를 키워드 분석한 결과, 4개 중 1개가 AI 과정일 만큼 AI 교육이 시장의 중심이 됐습니다.</p>
+
+<div class="tiles">
+  <div class="tile"><div class="v">2,952<small>개</small></div><div class="k">전체 훈련과정 (45개 기관)</div></div>
+  <div class="tile"><div class="v">718<small>개 (24%)</small></div><div class="k">AI 관련 과정</div></div>
+  <div class="tile"><div class="v">602<small>개</small></div><div class="k">"AI융합형" 공식 유형 과정</div></div>
+  <div class="tile"><div class="v">53<small>%</small></div><div class="k">비대면 실시간 운영 가능 과정</div></div>
+</div>
+
+<div class="chart">
+  <div class="ct">AI 과정 테마별 수요 랭킹</div>
+  <div class="cs">테마 키워드가 과정명에 포함된 과정 수 · 단위: 개 (한 과정이 여러 테마에 중복 집계될 수 있음)</div>
+  <div class="brow"><div class="bl">챗GPT·생성형 AI 업무활용</div><div class="bt"><i style="width:100%"></i></div><div class="bv">222</div></div>
+  <div class="brow"><div class="bl">산업·직무별 AX (제조·품질·HR 등)</div><div class="bt"><i style="width:50.5%"></i></div><div class="bv">112</div></div>
+  <div class="brow"><div class="bl">업무자동화·RPA·노코드</div><div class="bt"><i style="width:43.7%"></i></div><div class="bv">97</div></div>
+  <div class="brow"><div class="bl">AI 리더십·경영 전략</div><div class="bt"><i style="width:35.6%"></i></div><div class="bv">79</div></div>
+  <div class="brow"><div class="bl">AI 데이터 분석</div><div class="bt"><i style="width:32.0%"></i></div><div class="bv">71</div></div>
+  <div class="brow"><div class="bl">Copilot·오피스 AI (엑셀 등)</div><div class="bt"><i style="width:22.5%"></i></div><div class="bv">50</div></div>
+  <div class="brow"><div class="bl">AI 개발 (ML·LLM·RAG)</div><div class="bt"><i style="width:19.4%"></i></div><div class="bv">43</div></div>
+  <div class="brow"><div class="bl">AI 마케팅</div><div class="bt"><i style="width:17.1%"></i></div><div class="bv">38</div></div>
+  <div class="brow"><div class="bl">AI 콘텐츠 제작 (이미지·영상)</div><div class="bt"><i style="width:12.2%"></i></div><div class="bv">27</div></div>
+  <div class="brow"><div class="bl">프롬프트 엔지니어링</div><div class="bt"><i style="width:7.2%"></i></div><div class="bv">16</div></div>
+  <div class="cnote">출처: 2026 중소기업 인재 키움 프리미엄 훈련 지원과정 풀(Pool) 총괄 시트 — AI 관련 718개 과정 분류</div>
+</div>
+
+<div class="chart">
+  <div class="ct">과정명에 등장하는 AI 도구 언급 순위</div>
+  <div class="cs">AI 관련 718개 과정명 기준 · 단위: 개</div>
+  <div class="brow"><div class="bl">ChatGPT</div><div class="bt"><i style="width:100%"></i></div><div class="bv">115</div></div>
+  <div class="brow"><div class="bl">엑셀 (Excel)</div><div class="bt"><i style="width:26.1%"></i></div><div class="bv">30</div></div>
+  <div class="brow"><div class="bl">파이썬 (Python)</div><div class="bt"><i style="width:13.0%"></i></div><div class="bv">15</div></div>
+  <div class="brow"><div class="bl">Copilot</div><div class="bt"><i style="width:7.8%"></i></div><div class="bv">9</div></div>
+  <div class="brow"><div class="bl">Gemini</div><div class="bt"><i style="width:7.0%"></i></div><div class="bv">8</div></div>
+  <div class="brow"><div class="bl">RAG</div><div class="bt"><i style="width:6.1%"></i></div><div class="bv">7</div></div>
+  <div class="brow"><div class="bl">Power BI / Canva</div><div class="bt"><i style="width:4.3%"></i></div><div class="bv">5</div></div>
+  <div class="brow"><div class="bl">n8n</div><div class="bt"><i style="width:3.5%"></i></div><div class="bv">4</div></div>
+  <div class="cnote">ChatGPT가 압도적 1위 — 일반인 인지도가 가장 높은 키워드로, 입문 과정의 "간판"으로 쓰기에 가장 유리합니다.</div>
+</div>
+
+<div class="callout">
+  <b>핵심 발견 4가지</b>
+  <ul class="plain">
+    <li><b>"생성형 AI 업무활용"이 시장의 최대 격전지</b> — 45개 기관 중 20곳이 운영. 인지도·수요 모두 검증됐지만, 차별화 없이는 묻히기 쉬운 영역이기도 합니다.</li>
+    <li><b>표준 포맷은 하루 7시간(1일) 또는 14시간(2일)</b> — 생성형 AI 과정의 시간 분포 1·2위. 라임프렌즈 과정도 이 포맷에 맞추면 기업 교육담당자가 바로 이해합니다.</li>
+    <li><b>과정의 53%가 비대면 실시간(O) 운영</b> — 원격 평생교육원(로드맵 2단계)과 정확히 맞아떨어지는 흐름입니다.</li>
+    <li><b>대형 기관(KPC 188개·표준협회 133개)은 백화점식, 중소 기관은 특화형</b> — 라임프렌즈는 "사회적기업 × AX 특화 × PBL 실습"이라는 남들이 못 가진 조합으로 승부해야 합니다.</li>
+  </ul>
+</div>
+
+<!-- ================= 3. 선정 기준 ================= -->
+<h2><span class="num">3</span>과정 선정 기준</h2>
+<p class="lead">아래 3가지 기준을 모두 충족하는 테마만 라임프렌즈 과정으로 채택했습니다.</p>
+<div class="tiles">
+  <div class="tile"><div class="v" style="font-size:20px;">① 인지도·수요</div><div class="k">과정 풀에서 수요가 수치로 검증된 테마인가 (테마 랭킹 상위 + ChatGPT급 인지도 키워드 포함)</div></div>
+  <div class="tile"><div class="v" style="font-size:20px;">② 로드맵 적합성</div><div class="k">1단계 수의계약 용역 → 2단계 원격과정 → 3·4단계 환급과정으로 같은 콘텐츠를 재활용할 수 있는가</div></div>
+  <div class="tile"><div class="v" style="font-size:20px;">③ 수익모델 연계</div><div class="k">교육 후 "사내 AI 시스템 구축 컨설팅" 등 고단가 후속 계약으로 이어지는 구조인가</div></div>
+</div>
+<p style="font-size:14px; color:var(--ink-2);">※ 이 기준에 따라 수요는 있지만 라임프렌즈와 맞지 않는 영역은 제외했습니다 — 예: 40시간짜리 LLM 인프라·개발자 과정(솔데스크형)은 전문 IT학원의 영역, ISO 42001 심사원 양성은 인증기관의 영역입니다.</p>
+
+<!-- ================= 4. 추천 과정 ================= -->
+<h2><span class="num">4</span>라임프렌즈 추천 교육과정 6종 (상세 계획)</h2>
+<p class="lead">전 직원용 입문(L1) → 실무 심화(L2) → 경영진(L3)의 3단계 레벨 구조입니다. 모든 과정은 라임프렌즈 로드맵의 핵심 무기인 <b>PBL(실제 업무 과제 해결형) 방식</b>으로 설계했습니다.</p>
+
+<!-- P1 -->
+<div class="course">
+  <h3><span class="cno">과정 1</span>생성형 AI 업무활용 첫걸음 — ChatGPT·Claude·Gemini 실무</h3>
+  <div class="chip-row">
+    <span class="chip">L1 입문 · 전 직원</span><span class="chip">7시간 (1일)</span><span class="chip">집합 + 비대면 실시간</span><span class="chip">정원 15~20명</span><span class="chip">로드맵 1~4단계 전체</span>
+  </div>
+  <p class="why"><b>왜 이 과정인가:</b> 시장 수요 1위 테마(222개 과정)이자 인지도 1위 키워드(ChatGPT 115회). 라임프렌즈의 "간판 과정"으로, B2G 수의계약 제안·원격 교육원 첫 탑재 콘텐츠·환급과정 전환까지 전 단계에서 재사용됩니다.</p>
+  <div class="twrap"><table>
+    <tr><th style="width:90px;">모듈</th><th style="width:70px;">시간</th><th>내용</th></tr>
+    <tr><td class="mod">M1</td><td class="hrs">1H</td><td>생성형 AI 30분 만에 이해하기 — ChatGPT·Claude·Gemini 특징 비교와 우리 회사에 맞는 도구 고르기</td></tr>
+    <tr><td class="mod">M2</td><td class="hrs">2H</td><td>질문의 기술 — 역할·맥락·형식·예시 4요소 프롬프트 기본 패턴 5가지 실습</td></tr>
+    <tr><td class="mod">M3</td><td class="hrs">2H</td><td>문서 업무 즉시 적용 — 이메일·보고서·회의록·기획안 초안을 AI로 작성하고 다듬기</td></tr>
+    <tr><td class="mod">M4</td><td class="hrs">1.5H</td><td><b>PBL 워크숍:</b> 각자 실제 업무 과제 1건을 가져와 AI로 해결하고 결과 공유</td></tr>
+    <tr><td class="mod">M5</td><td class="hrs">0.5H</td><td>사내 AI 활용 보안·윤리 가이드 + 개인별 실천 액션플랜 작성</td></tr>
+  </table></div>
+  <p class="bench">벤치마크: 대원전기 「현장에서 바로 쓰이는 생성형AI 업무 활용(ChatGPT, Claude, Gemini)」 14H · 능률협회 「업무와 일상을 혁신하는 ChatGPT와 생성형AI 활용법」 7H · 스마트소셜 「비전공자를 위한 실무 AI 사용법」 6H</p>
+</div>
+
+<!-- P2 -->
+<div class="course">
+  <h3><span class="cno">과정 2</span>프롬프트 설계 실무 — AI에게 일 시키는 기술</h3>
+  <div class="chip-row">
+    <span class="chip">L2 실무 · 사무직 전반</span><span class="chip">7시간 (1일)</span><span class="chip">비대면 실시간 가능</span><span class="chip">정원 15명</span><span class="chip">로드맵 2단계 원격과정 최적</span>
+  </div>
+  <p class="why"><b>왜 이 과정인가:</b> "프롬프트 엔지니어링"은 검색량 대비 공급이 적은 틈새(풀 내 16개뿐). 과정 1 수료자의 자연스러운 다음 단계로, 원격 실시간 운영에 가장 적합한 실습형 주제입니다.</p>
+  <div class="twrap"><table>
+    <tr><th style="width:90px;">모듈</th><th style="width:70px;">시간</th><th>내용</th></tr>
+    <tr><td class="mod">M1</td><td class="hrs">1H</td><td>LLM은 어떻게 대답을 만드나 — 원리를 알면 질문이 달라진다 (환각·토큰·맥락창 이해)</td></tr>
+    <tr><td class="mod">M2</td><td class="hrs">2H</td><td>프롬프트 프레임워크 실습 — 역할 부여, 단계 분해, 예시 제시(Few-shot), 출력 형식 지정</td></tr>
+    <tr><td class="mod">M3</td><td class="hrs">2H</td><td>직무별 템플릿 실습 — 영업·인사·회계·마케팅 부서별 상황 프롬프트 만들기</td></tr>
+    <tr><td class="mod">M4</td><td class="hrs">1.5H</td><td><b>PBL 워크숍:</b> 팀 공용 "프롬프트 라이브러리" 구축 — 반복 업무 10건을 템플릿화</td></tr>
+    <tr><td class="mod">M5</td><td class="hrs">0.5H</td><td>결과 발표·상호 피드백, 사후 활용 가이드</td></tr>
+  </table></div>
+  <p class="bench">벤치마크: 대한상의 「AI 프롬프트 마스터: 질문의 기술」 6H · 크라우드아카데미 「업무효율 극대화를 위한 AI 질문의 기술」 6H · 기술사업화진흥협회 「LLM 원리 이해와 AI 프롬프트 설계」 12H</p>
+</div>
+
+<!-- P3 -->
+<div class="course">
+  <h3><span class="cno">과정 3</span>AI 업무자동화 실무 — 엑셀부터 노코드(n8n·Make)까지</h3>
+  <div class="chip-row">
+    <span class="chip">L2 실무 · 반복업무 담당자</span><span class="chip">14시간 (2일)</span><span class="chip">집합 권장</span><span class="chip">정원 12~15명</span><span class="chip">고단가 컨설팅 연계 1순위</span>
+  </div>
+  <p class="why"><b>왜 이 과정인가:</b> 수요 3위 테마(97개). "교육으로 끝나지 않고 회사 시스템이 바뀌는" 과정이라 만족도가 가장 높고, 수료 기업의 <b>"사내 AI 자동화 구축 컨설팅" 후속 계약</b>으로 이어지는 라임프렌즈 수익모델의 핵심 고리입니다.</p>
+  <div class="twrap"><table>
+    <tr><th style="width:110px;">모듈</th><th style="width:70px;">시간</th><th>내용</th></tr>
+    <tr><td class="mod">1일차 M1</td><td class="hrs">1H</td><td>자동화 사고법 — 내 업무에서 "AI에게 넘길 일" 찾아내는 진단 프레임</td></tr>
+    <tr><td class="mod">1일차 M2</td><td class="hrs">3H</td><td>엑셀 × ChatGPT 자동화 — 데이터 정리·함수 생성·대량 문서 처리 실습</td></tr>
+    <tr><td class="mod">1일차 M3</td><td class="hrs">3H</td><td><b>PBL:</b> 우리 팀 반복업무 진단 워크숍 — 자동화 대상 업무 목록·우선순위 확정</td></tr>
+    <tr><td class="mod">2일차 M4</td><td class="hrs">3H</td><td>노코드 자동화 입문 — n8n·Make로 앱과 앱을 연결하는 워크플로우 만들기</td></tr>
+    <tr><td class="mod">2일차 M5</td><td class="hrs">3H</td><td><b>PBL:</b> 실전 파이프라인 구축 — 메일 자동 회신, 주간보고 자동 생성, 데이터 수집 자동화 중 택1 완성</td></tr>
+    <tr><td class="mod">2일차 M6</td><td class="hrs">1H</td><td>팀별 결과 발표 + 사내 확산 로드맵 작성</td></tr>
+  </table></div>
+  <p class="bench">벤치마크: 기술사업화진흥협회 「하루 만에 배우는 AI 사무자동화 실무」 6H · 솔데스크 「n8n과 로컬 LLM을 활용한 사내 업무 자동화 워크플로우 구축」 32H · 대한상의 「AI로 완성하는 마케팅 자동화」 7H</p>
+</div>
+
+<!-- P4 -->
+<div class="course">
+  <h3><span class="cno">과정 4</span>AI 데이터 분석 — 코딩 없이 데이터로 보고하기</h3>
+  <div class="chip-row">
+    <span class="chip">L2 실무 · 기획·관리·품질</span><span class="chip">14시간 (2일)</span><span class="chip">집합 + 비대면 병행</span><span class="chip">정원 12~15명</span><span class="chip">제조기업 B2B 확장용</span>
+  </div>
+  <p class="why"><b>왜 이 과정인가:</b> 수요 5위(71개)이면서 "엑셀"(도구 언급 2위)과 결합하면 중소기업이 가장 절실해하는 주제가 됩니다. 코딩 없이 ChatGPT 데이터 분석 기능과 엑셀·Power BI만으로 완결해 비전공자 진입장벽을 없앴습니다.</p>
+  <div class="twrap"><table>
+    <tr><th style="width:110px;">모듈</th><th style="width:70px;">시간</th><th>내용</th></tr>
+    <tr><td class="mod">1일차 M1</td><td class="hrs">1H</td><td>데이터 리터러시 — 좋은 질문이 좋은 분석을 만든다 (지표 설계 기초)</td></tr>
+    <tr><td class="mod">1일차 M2</td><td class="hrs">3H</td><td>ChatGPT로 하는 데이터 분석 — 파일 업로드, 정제, 교차분석, 차트 생성 실습</td></tr>
+    <tr><td class="mod">1일차 M3</td><td class="hrs">3H</td><td>엑셀·Power BI 시각화 — 경영진이 한눈에 읽는 대시보드 만들기</td></tr>
+    <tr><td class="mod">2일차 M4</td><td class="hrs">4H</td><td><b>PBL:</b> 우리 회사 실제 데이터(매출·생산·품질·고객)로 분석 과제 수행</td></tr>
+    <tr><td class="mod">2일차 M5</td><td class="hrs">2H</td><td>AI로 인사이트 보고서 자동 작성 — 분석 결과를 경영 보고서로 변환</td></tr>
+    <tr><td class="mod">2일차 M6</td><td class="hrs">1H</td><td>발표 및 피드백, 부서 정착 가이드</td></tr>
+  </table></div>
+  <p class="bench">벤치마크: 대한상의 「[SK AX] 생성형 AI를 활용한 실전 데이터분석」 7H · 능률협회 「GPT-5·엑셀을 활용한 데이터 분석」 7H · 품질재단 「AI를 활용한 데이터 분석」 7H</p>
+</div>
+
+<!-- P5 -->
+<div class="course">
+  <h3><span class="cno">과정 5</span>AI 콘텐츠·마케팅 제작소 — 글·이미지·숏폼·SNS 운영까지</h3>
+  <div class="chip-row">
+    <span class="chip">L2 실무 · 마케팅·소상공인</span><span class="chip">14시간 (2일)</span><span class="chip">집합 + 비대면 실시간</span><span class="chip">정원 15명</span><span class="chip">지자체 B2G 제안 최적</span>
+  </div>
+  <p class="why"><b>왜 이 과정인가:</b> 마케팅(38개)+콘텐츠(27개) 합산 65개 수요에, 지자체·소상공인 지원사업과 궁합이 가장 좋은 주제입니다(충남도청·파주시청 등 1단계 B2G 타겟의 소상공인과 수요와 직결). 라임프렌즈가 이미 운영 중인 <b>SNS 콘텐츠 자동화 파이프라인 노하우를 그대로 교보재로 쓸 수 있어</b> 제작 원가가 가장 낮습니다.</p>
+  <div class="twrap"><table>
+    <tr><th style="width:110px;">모듈</th><th style="width:70px;">시간</th><th>내용</th></tr>
+    <tr><td class="mod">1일차 M1</td><td class="hrs">1H</td><td>AI 마케팅 트렌드 — 검색에서 AI 추천으로, 달라진 고객 유입 구조</td></tr>
+    <tr><td class="mod">1일차 M2</td><td class="hrs">3H</td><td>글쓰기 실습 — 블로그·상세페이지·광고 카피를 AI로 기획하고 SEO까지 잡기</td></tr>
+    <tr><td class="mod">1일차 M3</td><td class="hrs">3H</td><td>이미지 실습 — Canva·Firefly·미드저니로 카드뉴스·배너·상품컷 제작</td></tr>
+    <tr><td class="mod">2일차 M4</td><td class="hrs">3H</td><td>숏폼 영상 실습 — AI 영상 도구로 릴스·쇼츠 기획부터 편집·자막까지</td></tr>
+    <tr><td class="mod">2일차 M5</td><td class="hrs">3H</td><td><b>PBL:</b> 내 가게·내 회사 SNS 채널 1주일치 콘텐츠 캘린더 완성 + 발행 자동화 세팅</td></tr>
+    <tr><td class="mod">2일차 M6</td><td class="hrs">1H</td><td>성과 측정법(도달·전환)과 운영 루틴 만들기, 발표</td></tr>
+  </table></div>
+  <p class="bench">벤치마크: 멀티캠퍼스 「하루 만에 마스터하는 5가지 이미지&영상 AI 툴」 8H · 대한상의 「AI 활용, SNS 홍보 실무」 6H · 크라우드아카데미 「AI 크리에이티브 콘텐츠 제작」 6H</p>
+</div>
+
+<!-- P6 -->
+<div class="course">
+  <h3><span class="cno">과정 6</span>경영진 AX 전략 워크숍 — 우리 회사 AI 전환 로드맵 만들기</h3>
+  <div class="chip-row">
+    <span class="chip">L3 리더 · 대표·임원·팀장</span><span class="chip">6시간 (1일)</span><span class="chip">집합 (워크숍형)</span><span class="chip">정원 10~12명</span><span class="chip">컨설팅 수주의 관문</span>
+  </div>
+  <p class="why"><b>왜 이 과정인가:</b> AI 리더십·전략 수요는 79개로 4위지만, 라임프렌즈에겐 수익 관점에서 가장 중요한 과정입니다. 로드맵 3단계의 "국비로 교육비 부담이 없어진 기업 대표들을 고단가 맞춤형 컨설팅으로 연결"하는 설계가 이 워크숍에서 시작됩니다.</p>
+  <div class="twrap"><table>
+    <tr><th style="width:90px;">모듈</th><th style="width:70px;">시간</th><th>내용</th></tr>
+    <tr><td class="mod">M1</td><td class="hrs">1H</td><td>AI 시장·정책 브리핑 — 정부 AX 지원사업, 고용노동부 사회적기업 AI 정책 방향 포함</td></tr>
+    <tr><td class="mod">M2</td><td class="hrs">1.5H</td><td>산업별 AX 성공·실패 사례 — 제조·유통·서비스 중소기업 도입 사례 해부</td></tr>
+    <tr><td class="mod">M3</td><td class="hrs">2H</td><td><b>PBL 워크숍:</b> 우리 조직 AX 진단 — 업무별 AI 적용 우선순위 맵 작성</td></tr>
+    <tr><td class="mod">M4</td><td class="hrs">1.5H</td><td>실행 로드맵 수립 — 투자·인력·교육 계획 초안 작성 + 1:1 후속 컨설팅 상담</td></tr>
+  </table></div>
+  <p class="bench">벤치마크: 고려아카데미 「생성형 AI활용한 AI리더십과정」 6H · 스마트소셜 「리더를 위한 AI 전략 이해」 6H · 크라우드아카데미 「팀장 AI 리더십 베이직」 6H</p>
+</div>
+
+<div class="callout">
+  <b>확장 옵션 (2차년도):</b> 기본 6종이 자리 잡으면, 풀에서 수요가 확인된 <b>산업 특화 모듈</b>을 얹어 맞춤형 과정으로 확장합니다 — ① 제조 품질 AX(품질재단·기술사업화협회형, 112개 수요), ② HR·인사 AX(중앙경제HR형), ③ 회계·재무 AI(더존형). 같은 과정 골격에 산업 데이터를 바꿔 끼우는 방식이라 개발비가 적게 듭니다.
+</div>
+
+<!-- ================= 5. 로드맵 연계 ================= -->
+<h2><span class="num">5</span>사업 로드맵과 교육과정의 연결</h2>
+<p class="lead">같은 6개 과정이 단계마다 "포장"만 바뀌며 재사용됩니다 — 한 번 만든 콘텐츠로 네 번 파는 구조입니다.</p>
+
+<div class="stage">
+  <div class="badge">1단계<small>0~3개월</small>즉시 실행</div>
+  <div class="body">
+    <b class="t">수의계약 "자문 용역"으로 판매 (교육이 아닌 워크숍·자문 프레이밍)</b>
+    <ul class="plain">
+      <li>과정 1·3·5를 <b>「중소기업 AX 전환 진단 및 실무 기술 자문 용역」</b>으로 패키징해 충남도청·파주시청 등 B2G 제안</li>
+      <li>필수 준비: <b>취약계층 고용비율 확인서(참고1 매뉴얼)</b> 발급 → 5,000만 원 한도 1인 견적 수의계약 자격 확보 (미충족 시 2,000만 원 한도로 시작)</li>
+      <li>홈택스로 '경영컨설팅업' 업종 추가해 계약 신뢰도 보완</li>
+    </ul>
+  </div>
+</div>
+<div class="stage">
+  <div class="badge">2단계<small>3~6개월</small>인허가 확보</div>
+  <div class="body">
+    <b class="t">원격 평생교육원 설립 — 과정 1·2를 온라인 콘텐츠로 제작</b>
+    <ul class="plain">
+      <li><b>평생교육시설 신고서(붙임2 서식)</b>를 관할 교육지원청에 제출 — 운영규칙·시설현황표·평생교육사 자격증 등 첨부, 처리기간 10일</li>
+      <li>1단계 오프라인 워크숍 내용을 기반으로 <b>10시간 이상 자체 AI 직무 교육 영상 최소 1개</b>(과정 1 권장)를 제작해 LMS 탑재 — 설립 요건이자 "1년 실적 타이머"의 시작</li>
+      <li>인허가 취득 즉시 교육서비스업(면세) 코드 추가</li>
+    </ul>
+  </div>
+</div>
+<div class="stage">
+  <div class="badge">3단계<small>6~12개월</small>하이브리드</div>
+  <div class="body">
+    <b class="t">파트너 훈련기관 MOU로 6종 전체를 "환급과정"으로 공급</b>
+    <ul class="plain">
+      <li>HRD-Net 승인 보유 기관과 <b>커리큘럼·교재 공급 + 강사 출강</b> 형태의 합법적 B2B 계약 (수익 쉐어 60~70%)</li>
+      <li>이때 과정 포맷이 시장 표준(7H/14H, 비대면 실시간)과 일치해야 파트너 심사에 바로 얹을 수 있음 — 6종 모두 이 기준으로 설계됨</li>
+      <li>과정 6(경영진 워크숍) 수료 기업에 <b>고단가 사내 AI 구축 컨설팅</b> 후속 제안</li>
+    </ul>
+  </div>
+</div>
+<div class="stage">
+  <div class="badge">4단계<small>12개월+</small>독립</div>
+  <div class="body">
+    <b class="t">자체 훈련기관 인증 — 6종을 NCS 규격으로 재정렬해 HRD-Net 정식 런칭</b>
+    <ul class="plain">
+      <li>원격 평생교육원 운영 실적 1년 경과 시점에 직업능력심사평가원 신규 기관 인증평가 신청</li>
+      <li>6개 과정을 NCS 코드(예: 사무자동화·빅데이터분석·디지털콘텐츠 직무) 기준으로 재편성</li>
+      <li>"사회적기업 5,000만 수의계약 + 고용보험 환급과정" 동시 제안으로 영업이익 40% 목표</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ================= 6. 실행 체크리스트 ================= -->
+<h2><span class="num">6</span>지금 바로 할 일 (실행 체크리스트)</h2>
+<ol class="steps">
+  <li><b>취약계층 고용비율 30% 충족 여부 확인</b> — 통합정보시스템(seis.or.kr)에서 확인서 신청. 고용보험 가입 180일 이상 근로자 기준, 검토 15일 소요, 유효기간 180일 (참고1 매뉴얼)</li>
+  <li><b>과정 1 「생성형 AI 업무활용 첫걸음」 교안 개발 착수</b> — 간판 과정 1종을 먼저 완성해 1단계 수의계약 제안서에 즉시 활용</li>
+  <li><b>B2G 제안서 프레이밍</b> — '교육' 대신 「AX 전환 진단 및 실무 기술 자문 용역」 명칭으로 충남도청·파주시청 미팅 추진 + 홈택스 업종 추가</li>
+  <li><b>원격 평생교육원 설립 준비</b> — 본사(충남 청양) vs 연구소(서울) 위치 결정, 평생교육사 채용(주 15시간+4대보험), 임대형 LMS 계약, 붙임2 신고서 서류 준비</li>
+  <li><b>과정 1을 10시간 이상 영상 콘텐츠로 제작</b> — 평생교육시설 신고 요건 충족 및 LMS 탑재</li>
+  <li><b>파트너 후보 리스트업</b> — 이번 훈련과정 풀의 45개 기관 중 AI 과정이 적은 지역 기관(예: 남천안중장비학원 등 비IT 기관)이 MOU 협상에 유리한 후보</li>
+  <li><b>공공입찰 정보 자동 수집 체계 구축</b> — 로드맵 모니터링 항목: 나라장터·지자체 공고 크롤링 (기존 SNS 자동화 파이프라인 기술 재활용 가능)</li>
+</ol>
+
+<footer>
+  본 기획안은 「2026 중소기업 인재 키움 프리미엄 훈련」 지원과정 풀(45개 기관·2,952개 과정) 전수 분석, 라임프렌즈 AX 사업 실행 로드맵,
+  사회적기업 취약계층 고용비율 확인서 신청 매뉴얼(참고1), 평생교육시설 신고서 서식(붙임2)을 근거로 작성되었습니다. · LIMEFRIENDS · 2026
+</footer>
+
+</div>
+</body>
+</html>
